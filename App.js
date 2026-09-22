@@ -10,90 +10,83 @@ import {
 } from "react-native";
 
 export default function App() {
-  const categories = [
-    { name: "Films", icon: "🎬" },
-    { name: "Séries", icon: "📺" },
-    { name: "Anime", icon: "🍿" },
-    { name: "Nollywood", icon: "🎥" },
-  ];
+  const categories = ["Films", "Séries", "Anime", "Nollywood"];
 
-  const showSubscription = () => {
+  const subscribe = () => {
     Alert.alert(
       "Abonnement Cinédium",
-      "500 FCFA / semaine\n1 500 FCFA / mois",
+      "Choisis ton abonnement :\n\n500 FCFA / semaine\n1 500 FCFA / mois",
       [{ text: "Fermer" }]
+    );
+  };
+
+  const watchFilm = (title) => {
+    Alert.alert(
+      "Abonnement requis",
+      `Abonne-toi pour regarder ${title}.`,
+      [
+        { text: "Annuler", style: "cancel" },
+        { text: "S'abonner", onPress: subscribe },
+      ]
     );
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>CINÉDIUM</Text>
-        <Text style={styles.tagline}>
-          Ton univers de divertissement
+        <Text style={styles.logo}>🎬 Cinédium</Text>
+        <Text style={styles.subtitle}>
+          Ton univers de films et séries
         </Text>
       </View>
 
-      <View style={styles.banner}>
-        <Text style={styles.bannerTitle}>
-          Bienvenue sur Cinédium 🎬
+      <TouchableOpacity
+        style={styles.subscription}
+        onPress={subscribe}
+      >
+        <Text style={styles.subscriptionTitle}>
+          ⭐ Abonne-toi à Cinédium
         </Text>
-        <Text style={styles.bannerText}>
-          Découvre des films, des séries et des anime.
+        <Text style={styles.subscriptionText}>
+          500 FCFA / semaine
         </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={showSubscription}
-        >
-          <Text style={styles.buttonText}>
-            S'abonner maintenant
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <Text style={styles.subscriptionText}>
+          1 500 FCFA / mois
+        </Text>
+        <Text style={styles.buttonText}>
+          Voir les abonnements
+        </Text>
+      </TouchableOpacity>
 
-      <Text style={styles.heading}>Explorer les catégories</Text>
+      <Text style={styles.heading}>Catégories</Text>
 
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.name}
-          style={styles.category}
-          onPress={showSubscription}
-        >
-          <Text style={styles.icon}>{category.icon}</Text>
-          <View style={styles.categoryInfo}>
-            <Text style={styles.categoryTitle}>
-              {category.name}
-            </Text>
-            <Text style={styles.categoryText}>
-              Découvrir les contenus
-            </Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {categories.map((category) => (
+          <View style={styles.category} key={category}>
+            <Text style={styles.categoryText}>{category}</Text>
           </View>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-      ))}
+        ))}
+      </ScrollView>
 
-      <View style={styles.plans}>
-        <Text style={styles.heading}>Nos abonnements</Text>
+      <Text style={styles.heading}>Films disponibles</Text>
 
-        <View style={styles.plan}>
-          <Text style={styles.planTitle}>Abonnement hebdomadaire</Text>
-          <Text style={styles.price}>500 FCFA / semaine</Text>
-        </View>
-
-        <View style={styles.plan}>
-          <Text style={styles.planTitle}>Abonnement mensuel</Text>
-          <Text style={styles.price}>1 500 FCFA / mois</Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={showSubscription}
-        >
-          <Text style={styles.buttonText}>
-            Choisir mon abonnement
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {["Film à découvrir 🎬", "Action et aventure 🔥", "Nollywood 🎞️"].map(
+        (title) => (
+          <TouchableOpacity
+            style={styles.film}
+            key={title}
+            onPress={() => watchFilm(title)}
+          >
+            <Text style={styles.filmTitle}>{title}</Text>
+            <Text style={styles.filmText}>
+              Appuie pour regarder
+            </Text>
+            <Text style={styles.watchButton}>
+              🔒 S'abonner pour regarder
+            </Text>
+          </TouchableOpacity>
+        )
+      )}
 
       <Text style={styles.footer}>
         © 2026 Cinédium
@@ -105,139 +98,89 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0D1020",
+    backgroundColor: "#0B1020",
+    padding: 20,
   },
-
   header: {
-    paddingTop: 55,
-    paddingHorizontal: 22,
-    paddingBottom: 20,
+    marginTop: 30,
+    marginBottom: 25,
   },
-
   logo: {
-    color: "#F5C451",
     fontSize: 32,
     fontWeight: "bold",
-    letterSpacing: 2,
+    color: "#FFFFFF",
   },
-
-  tagline: {
-    color: "#BFC3D5",
-    fontSize: 14,
+  subtitle: {
+    color: "#B8C0D9",
+    fontSize: 16,
+    marginTop: 8,
+  },
+  subscription: {
+    backgroundColor: "#D4A72C",
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 25,
+  },
+  subscriptionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#111827",
+  },
+  subscriptionText: {
+    fontSize: 16,
+    color: "#111827",
     marginTop: 6,
   },
-
-  banner: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 20,
-    backgroundColor: "#242B48",
-  },
-
-  bannerTitle: {
-    color: "#FFFFFF",
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-
-  bannerText: {
-    color: "#D1D5E5",
-    fontSize: 15,
-    marginTop: 12,
-    lineHeight: 22,
-  },
-
-  button: {
-    backgroundColor: "#F5C451",
-    borderRadius: 10,
-    padding: 15,
-    alignItems: "center",
-    marginTop: 20,
-  },
-
   buttonText: {
-    color: "#111426",
-    fontSize: 15,
+    backgroundColor: "#111827",
+    color: "#FFFFFF",
+    padding: 12,
+    borderRadius: 8,
+    textAlign: "center",
+    marginTop: 15,
     fontWeight: "bold",
   },
-
   heading: {
     color: "#FFFFFF",
-    fontSize: 21,
+    fontSize: 22,
     fontWeight: "bold",
-    marginHorizontal: 18,
-    marginTop: 18,
-    marginBottom: 14,
+    marginBottom: 15,
+    marginTop: 10,
   },
-
   category: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#1C223A",
-    marginHorizontal: 16,
-    marginBottom: 12,
-    padding: 16,
-    borderRadius: 14,
+    backgroundColor: "#242D45",
+    padding: 15,
+    borderRadius: 12,
+    marginRight: 10,
   },
-
-  icon: {
-    fontSize: 30,
-    marginRight: 14,
+  categoryText: {
+    color: "#FFFFFF",
+    fontWeight: "bold",
   },
-
-  categoryInfo: {
-    flex: 1,
+  film: {
+    backgroundColor: "#1A2235",
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 15,
   },
-
-  categoryTitle: {
+  filmTitle: {
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "bold",
   },
-
-  categoryText: {
-    color: "#AEB4CC",
-    fontSize: 13,
-    marginTop: 4,
-  },
-
-  arrow: {
-    color: "#F5C451",
-    fontSize: 28,
-  },
-
-  plans: {
-    backgroundColor: "#181E34",
-    margin: 16,
-    paddingVertical: 10,
-    borderRadius: 18,
-  },
-
-  plan: {
-    backgroundColor: "#242B48",
-    marginHorizontal: 16,
-    marginBottom: 12,
-    padding: 16,
-    borderRadius: 12,
-  },
-
-  planTitle: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "bold",
-  },
-
-  price: {
-    color: "#F5C451",
-    fontSize: 20,
-    fontWeight: "bold",
+  filmText: {
+    color: "#B8C0D9",
     marginTop: 8,
   },
-
+  watchButton: {
+    color: "#FFD166",
+    marginTop: 15,
+    fontWeight: "bold",
+  },
   footer: {
-    color: "#8D94AE",
+    color: "#7D89A8",
     textAlign: "center",
-    margin: 25,
+    marginVertical: 30,
   },
 });
-
+    
